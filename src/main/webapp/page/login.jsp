@@ -4,7 +4,44 @@
 <HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>青鸟租房 - 用户登录</TITLE>
 <META content="text/html; charset=utf-8" http-equiv=Content-Type><LINK 
 rel=stylesheet type=text/css href="../css/style.css">
-<META name=GENERATOR content="MSHTML 8.00.7601.17514"></HEAD>
+<META name=GENERATOR content="MSHTML 8.00.7601.17514">
+  <script language="JavaScript" type="text/javascript" src="../scripts/jquery-1.8.3.js"></script>
+  <script language="JavaScript">
+    var timeobj;
+  $(function(){
+      //发送验证码
+      $("#sendButton").click(function(){
+
+            $.post("sendCode",{"tel":$("#inputTel").val()},function(data){
+                alert(data.result);
+                if(data.result>0) {
+                    //安装定时
+                  timeobj=setInterval("goback()",1000);
+                    alert("发送验证码成功");
+                }
+               else
+                   alert("发送失败");
+            },"json");
+
+      });
+
+  });
+
+    //显示倒计时
+    var time=60;
+    function goback(){
+           time--;
+            if(time==0) {
+                $("#sendButton").val("重新发送");
+                time=60;
+                clearInterval(timeobj); //消除定时
+            }
+            else {
+                $("#sendButton").val(time);
+            }
+    }
+</script>
+</HEAD>
 <BODY>
 <DIV id=header class=wrap>
 <DIV id=logo><IMG src="../images/logo.gif"></DIV></DIV>
@@ -33,6 +70,14 @@ rel=stylesheet type=text/css href="../css/style.css">
 						--></TBODY></TABLE>
 <DIV class=buttons> <INPUT  value=登陆 type=submit> <INPUT onclick='document.location="regs.jsp"' value=注册 type=button>
 </DIV></DIV></FORM></DIV></DIV></DIV>
+<hr/>
+<form name="form3" method="post" action="login2">
+  手机号:<input type="text" id="inputTel" name="inputTel"> <input id="sendButton" type="button" name="dd" value="获取验证码">
+  <br/>
+  验证码:<input type="text" name="inputCode">
+  <INPUT  value=登陆 type=submit>
+
+</form>
 <DIV id=footer class=wrap>
 <DL>
   <DT>青鸟租房 © 2018 北大青鸟 京ICP证1000001号</DT>
